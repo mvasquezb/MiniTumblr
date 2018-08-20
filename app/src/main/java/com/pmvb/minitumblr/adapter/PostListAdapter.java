@@ -12,11 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pmvb.minitumblr.R;
+import com.pmvb.minitumblr.model.PhotoPost;
+import com.pmvb.minitumblr.model.Post;
+import com.pmvb.minitumblr.model.TextPost;
 import com.squareup.picasso.Picasso;
-import com.tumblr.jumblr.types.Photo;
-import com.tumblr.jumblr.types.PhotoPost;
-import com.tumblr.jumblr.types.Post;
-import com.tumblr.jumblr.types.TextPost;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,6 +29,9 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     }
 
     private List<Post> postList = new ArrayList<>();
+
+    public PostListAdapter() {
+    }
 
     public PostListAdapter(List<Post> posts) {
         this.postList.addAll(posts);
@@ -149,9 +151,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         void bind(Post post) {
             super.bind(post);
             PhotoPost imgPost = (PhotoPost) post;
-            Photo photo = imgPost.getPhotos().get(0);
             Picasso.get()
-                    .load(photo.getOriginalSize().getUrl())
+                    .load(imgPost.getPhotoUrls().get(0))
                     .into(contentImage);
             captionText.setText(renderHtml(imgPost.getCaption()));
         }

@@ -1,18 +1,18 @@
 package com.pmvb.minitumblr;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.pmvb.minitumblr.tasks.GetPostsTask;
 import com.pmvb.minitumblr.adapter.PostListAdapter;
+import com.pmvb.minitumblr.model.Post;
+import com.pmvb.minitumblr.store.Store;
+import com.pmvb.minitumblr.tasks.GetPostsTask;
 import com.tumblr.jumblr.JumblrClient;
-import com.tumblr.jumblr.types.Post;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity
@@ -20,7 +20,6 @@ public class MainActivity
         implements GetPostsTask.GetPostsCallback {
 
     private RecyclerView postListView;
-    private List<Post> postList;
     private PostListAdapter postsAdapter;
     private String blogName = "hawkingsbird";
 
@@ -28,9 +27,9 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Store.create(this);
         postListView = findViewById(R.id.post_list);
-        postList = new ArrayList<>();
-        postsAdapter = new PostListAdapter(postList);
+        postsAdapter = new PostListAdapter();
 
         JumblrClient jumblr = new JumblrClient(
                 getString(R.string.tumblr_api_consumer_key),
@@ -45,30 +44,11 @@ public class MainActivity
 
     @Override
     public void onPostsSuccess(@NonNull List<Post> posts) {
-        postList = posts;
         processPosts(posts);
     }
 
     private void processPosts(List<Post> posts) {
-        postList.addAll(posts);
         postsAdapter.addPosts(posts);
-//        Log.d("MainActivity", "Posts: " + postList.size());
-//        for (Post post : postList.subList(0, Math.min(50, posts.size()))) {
-//            String log = "";
-//            switch (post.getType()) {
-//                case "text": {
-//                    TextPost textPost = (TextPost) post;
-//                    log = "Title: " + textPost.getTitle() + " - Body: " + textPost.getBody();
-//                    break;
-//                }
-//                case "photo": {
-//                    PhotoPost photoPost = (PhotoPost) post;
-//                    log = "Caption: " + photoPost.getCaption() + " - Photos: " + photoPost.getPhotos().size();
-//                    break;
-//                }
-//            }
-//            Log.d("MainActivity", "Type: " + post.getType() + " - URL: " + post.getShortUrl() + " - Log: " + log);
-//        }
     }
 
     @Override

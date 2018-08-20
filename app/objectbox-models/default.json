@@ -1,0 +1,78 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:4422257797356360619",
+      "lastPropertyId": "6:1970909094681856609",
+      "name": "PhotoPost",
+      "properties": [
+        {
+          "id": "1:8038502918141103539",
+          "name": "id"
+        },
+        {
+          "id": "2:5955803472914512999",
+          "name": "blogName"
+        },
+        {
+          "id": "3:7595646484437045572",
+          "name": "avatarUrl"
+        },
+        {
+          "id": "4:7603362326107524087",
+          "name": "type"
+        },
+        {
+          "id": "5:8805411699300126771",
+          "name": "caption"
+        },
+        {
+          "id": "6:1970909094681856609",
+          "name": "originalSizePhotoUrl"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:316501392274030072",
+      "lastPropertyId": "5:6400347563585306339",
+      "name": "TextPost",
+      "properties": [
+        {
+          "id": "1:656092179358457379",
+          "name": "id"
+        },
+        {
+          "id": "2:3069236811549657976",
+          "name": "blogName"
+        },
+        {
+          "id": "3:4184555633633521403",
+          "name": "avatarUrl"
+        },
+        {
+          "id": "4:8507729552374467531",
+          "name": "type"
+        },
+        {
+          "id": "5:6400347563585306339",
+          "name": "body"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:316501392274030072",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 4,
+  "modelVersionParserMinimum": 4,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
