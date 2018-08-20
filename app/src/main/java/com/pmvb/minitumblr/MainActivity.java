@@ -1,21 +1,16 @@
-package com.pmvb.minitumblr.view;
+package com.pmvb.minitumblr;
 
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.pmvb.minitumblr.R;
 import com.pmvb.minitumblr.tasks.GetPostsTask;
-import com.pmvb.minitumblr.view.adapter.PostListAdapter;
+import com.pmvb.minitumblr.adapter.PostListAdapter;
 import com.tumblr.jumblr.JumblrClient;
-import com.tumblr.jumblr.types.PhotoPost;
 import com.tumblr.jumblr.types.Post;
-import com.tumblr.jumblr.types.TextPost;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +22,7 @@ public class MainActivity
     private RecyclerView postListView;
     private List<Post> postList;
     private PostListAdapter postsAdapter;
+    private String blogName = "hawkingsbird";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +40,7 @@ public class MainActivity
         postListView.setAdapter(postsAdapter);
 
         GetPostsTask task = new GetPostsTask(jumblr, this);
-        task.execute("hawkingsbird");
+        task.execute(blogName);
     }
 
     @Override

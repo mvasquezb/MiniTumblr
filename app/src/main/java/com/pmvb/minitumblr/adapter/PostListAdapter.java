@@ -1,4 +1,4 @@
-package com.pmvb.minitumblr.view.adapter;
+package com.pmvb.minitumblr.adapter;
 
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pmvb.minitumblr.R;
+import com.squareup.picasso.Picasso;
+import com.tumblr.jumblr.types.Photo;
 import com.tumblr.jumblr.types.PhotoPost;
 import com.tumblr.jumblr.types.Post;
 import com.tumblr.jumblr.types.TextPost;
@@ -147,7 +149,10 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         void bind(Post post) {
             super.bind(post);
             PhotoPost imgPost = (PhotoPost) post;
-            //TODO: Picasso load image
+            Photo photo = imgPost.getPhotos().get(0);
+            Picasso.get()
+                    .load(photo.getOriginalSize().getUrl())
+                    .into(contentImage);
             captionText.setText(renderHtml(imgPost.getCaption()));
         }
     }
