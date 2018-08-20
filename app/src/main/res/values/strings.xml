@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">MiniTumblr</string>
+    <string name="tumblr_api_consumer_key">1fWBgWuLLMnYpXimf8io1tbL2AqCJP3XmfeAP4tAWjsRRHpdYR</string>
+    <string name="tumblr_api_consumer_secret">4ajb5mGCz0Ik1EfCZLfYPNrfAkTHN19m4zUYGHpkuYVNaJyEAu</string>
+
     <string name="dashboard_title">Dashboard</string>
     <string name="post_author_img">Post Author Profile Image</string>
     <string name="post_content_image">Post Content Image</string>
