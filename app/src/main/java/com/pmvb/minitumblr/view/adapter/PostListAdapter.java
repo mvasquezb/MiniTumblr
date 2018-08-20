@@ -1,7 +1,10 @@
 package com.pmvb.minitumblr.view.adapter;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +12,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pmvb.minitumblr.R;
-import com.pmvb.minitumblr.model.ImagePost;
-import com.pmvb.minitumblr.model.Post;
-import com.pmvb.minitumblr.model.TextPost;
+import com.tumblr.jumblr.types.PhotoPost;
+import com.tumblr.jumblr.types.Post;
+import com.tumblr.jumblr.types.TextPost;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> {
 
-    private List<Post> postList;
+    public enum PostType {
+        TEXT,
+        PHOTO
+    }
+
+    private List<Post> postList = new ArrayList<>();
+
+    public PostListAdapter(List<Post> posts) {
+        this.postList.addAll(posts);
+    }
+
+    public void addPosts(Collection<Post> posts) {
+        int postCount = postList.size();
+        postList.addAll(posts);
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
@@ -30,16 +50,16 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         PostViewHolder holder;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView;
-        Post.PostType[] postTypes = Post.PostType.values();
+        PostType[] postTypes = PostType.values();
         switch (postTypes[viewType]) {
             case TEXT: {
                 itemView = inflater.inflate(R.layout.post_item_text, parent, false);
                 holder = new TextPostViewHolder(itemView);
                 break;
             }
-            case IMAGE: {
+            case PHOTO: {
                 itemView = inflater.inflate(R.layout.post_item_image, parent, false);
-                holder = new ImagePostViewHolder(itemView);
+                holder = new PhotoPostViewHolder(itemView);
                 break;
             }
             default: {
@@ -53,17 +73,22 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
     @Override
     public int getItemViewType(int position) {
-        return postList.get(position).getType().ordinal();
+        String upperType = postList.get(position).getType().toUpperCase();
+        try {
+            return PostType.valueOf(upperType).ordinal();
+        } catch (IllegalArgumentException ex) {
+            return 1000;
+        }
     }
 
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
-
+        holder.bind(postList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return postList.size();
     }
 
     static class PostViewHolder extends RecyclerView.ViewHolder {
@@ -78,7 +103,15 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
         void bind(Post post) {
             //TODO: Picasso load author image
-            authorText.setText(post.getAuthorName());
+            authorText.setText(post.getBlogName());
+        }
+
+        protected Spanned renderHtml(String text) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                return Html.fromHtml(text);
+            } else {
+                return Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT);
+            }
         }
     }
 
@@ -95,16 +128,16 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         void bind(Post post) {
             super.bind(post);
             TextPost textPost = (TextPost) post;
-            contentText.setText(textPost.getBody());
+            contentText.setText(renderHtml(textPost.getBody()));
         }
     }
 
-    static class ImagePostViewHolder extends PostViewHolder {
+    static class PhotoPostViewHolder extends PostViewHolder {
 
         ImageView contentImage;
         TextView captionText;
 
-        public ImagePostViewHolder(View itemView) {
+        public PhotoPostViewHolder(View itemView) {
             super(itemView);
             contentImage = itemView.findViewById(R.id.post_content_image);
             captionText = itemView.findViewById(R.id.post_content_caption);
@@ -113,9 +146,9 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         @Override
         void bind(Post post) {
             super.bind(post);
-            ImagePost imgPost = (ImagePost) post;
+            PhotoPost imgPost = (PhotoPost) post;
             //TODO: Picasso load image
-            captionText.setText(imgPost.getCaption());
+            captionText.setText(renderHtml(imgPost.getCaption()));
         }
     }
 }

@@ -13,6 +13,7 @@ import java.util.List;
 public class GetPostsTask extends AsyncTask<String, Void, Void> {
     private final GetPostsCallback callback;
     private JumblrClient jumblr;
+    private List<Post> posts;
 
     public GetPostsTask(JumblrClient jumblr, GetPostsCallback callback) {
         this.jumblr = jumblr;
@@ -26,14 +27,20 @@ public class GetPostsTask extends AsyncTask<String, Void, Void> {
         }
         try {
             String blogName = strings[0];
-            List<Post> posts = jumblr.blogPosts(blogName);
-            callback.onPostsSuccess(posts);
+            this.posts = jumblr.blogPosts(blogName);
         } catch (JumblrException jumblrEx) {
             callback.onPostsError(jumblrEx);
         } catch (Exception ex) {
             callback.onPostsError(ex);
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        if (posts != null) {
+            callback.onPostsSuccess(posts);
+        }
     }
 
     public interface GetPostsCallback {
