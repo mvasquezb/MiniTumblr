@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">MiniTumblr</string>
+
+    <string name="tumblr_api_consumer_key">1fWBgWuLLMnYpXimf8io1tbL2AqCJP3XmfeAP4tAWjsRRHpdYR</string>
+    <string name="tumblr_api_consumer_secret">4ajb5mGCz0Ik1EfCZLfYPNrfAkTHN19m4zUYGHpkuYVNaJyEAu</string>
 </resources>
